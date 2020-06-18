@@ -2,25 +2,26 @@
   <div id="cards">
     <div
       class="card-item"
-      v-for="(card, i) in cards"
+      v-for="(card) in cards"
       :key="card.title"
     >
       <div class="card-header">
         <div class="card-header-left">{{ card.title }}</div>
-        <div class="card-header-right">{{ '0' + (i + 1) }}</div>
+        <!-- <div class="card-header-right">{{ '0' + (i + 1) }}</div> -->
       </div>
+      <div class="card-header-left">当前温度：<span>{{ temputer }} ℃</span></div>
       <dv-charts class="ring-charts" :option="card.ring" />
       <div class="card-footer">
         <div class="card-footer-item">
-          <div class="footer-title">累计金额</div>
+          <div class="footer-title">{{direction}}</div>
           <div class="footer-detail">
-            <dv-digital-flop :config="card.total" style="width:70%;height:35px;" />元
+            <dv-digital-flop :config="card.total" style="width:70%;height:35px;" />
           </div>
         </div>
         <div class="card-footer-item">
-          <div class="footer-title">巡查病害</div>
+          <div class="footer-title">状况</div>
           <div class="footer-detail">
-            <dv-digital-flop :config="card.num" style="width:70%;height:35px;" />处
+            <dv-digital-flop :config="card.num" style="width:70%;height:35px;" />
           </div>
         </div>
       </div>
@@ -29,21 +30,39 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'Cards',
   data () {
     return {
-      cards: []
+      cards: [],
+      temputer: '',
+      humidity: '',
+      wind: '',
+      condition: '',
+      direction: ''
     }
   },
   methods: {
+    _getWeather () {
+      axios.get('/weather').then(res => {
+        console.log(res.data.data)
+        let data = res.data.data.weather
+        this.temputer = data.current_temperature
+        this.humidity = data.aqi
+        this.direction = data.wind_direction
+        this.wind = `${data.wind_level}级`
+        this.condition = data.current_condition
+        this.createData()
+      })
+    },
     createData () {
-      const { randomExtend } = this
+      // const { randomExtend } = this
 
-      this.cards = new Array(5).fill(0).map((foo, i) => ({
-        title: '测试路段' + (i + i),
+      this.cards = new Array(1).fill(0).map((foo, i) => ({
+        title: '环境态势',
         total: {
-          number: [randomExtend(9000, 10000)],
+          number: [this.wind],
           content: '{nt}',
           textAlign: 'right',
           style: {
@@ -52,7 +71,7 @@ export default {
           }
         },
         num: {
-          number: [randomExtend(30, 60)],
+          number: [this.condition],
           content: '{nt}',
           textAlign: 'right',
           style: {
@@ -69,7 +88,7 @@ export default {
               arcLineWidth: 13,
               radius: '80%',
               data: [
-                { name: '资金占比', value: randomExtend(40, 60) }
+                { name: '空气质量指数', value: this.humidity }
               ],
               axisLabel: {
                 show: false
@@ -87,7 +106,7 @@ export default {
               },
               details: {
                 show: true,
-                formatter: '资金占比{value}%',
+                formatter: '空气质量\n 指数\n \n{value}%',
                 style: {
                   fill: '#1ed3e5',
                   fontSize: 20
@@ -107,12 +126,21 @@ export default {
       }
     }
   },
+  watch: {
+
+  },
   mounted () {
-    const { createData } = this
+    this.$nextTick(() => {
+      this._getWeather()
+      setInterval(() => {
+        this._getWeather()
+      }, 1000 * 60 * 30)
+    })
+    // const { createData } = this
 
-    createData()
+    // createData()
 
-    setInterval(this.createData, 30000)
+    // setInterval(this.createData, 30000)
   }
 }
 </script>
@@ -121,12 +149,12 @@ export default {
 #cards {
   display: flex;
   justify-content: space-between;
-  height: 45%;
+  height: 35%;
 
   .card-item {
     background-color: rgba(6, 30, 93, 0.5);
     border-top: 2px solid rgba(1, 153, 209, .5);
-    width: 19%;
+    width: 100%;
     display: flex;
     flex-direction: column;
   }
@@ -135,12 +163,18 @@ export default {
     display: flex;
     height: 20%;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
     .card-header-left {
-      font-size: 18px;
-      font-weight: bold;
-      padding-left: 20px;
+      // font-size: 18px;
+      // font-weight: bold;
+      // padding-left: 20px;
+    font-weight: bold;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    justify-content: center;
     }
 
     .card-header-right {
@@ -149,7 +183,12 @@ export default {
       color: #03d3ec;
     }
   }
-
+  span {
+      color: #fff;
+      font-weight: bold;
+      font-size: 24px;
+      // margin-left: 20px;
+    }
   .ring-charts {
     height: 55%;
   }

@@ -1,10 +1,10 @@
 <template>
   <div id="water-level-chart">
-    <div class="water-level-chart-title">计划资金累计完成情况</div>
+    <div class="water-level-chart-title">当前人数</div>
 
-    <div class="water-level-chart-details">
+    <!-- <div class="water-level-chart-details">
       累计完成<span>235,680</span>元
-    </div>
+    </div> -->
 
     <div class="chart-container">
       <dv-water-level-pond :config="config" />
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+// import { getPeopleData } from '../../network/data'
 export default {
   name: 'WaterLevelChart',
   data () {
@@ -20,9 +21,27 @@ export default {
       config: {
         data: [45],
         shape: 'round',
-        waveHeight: 25,
-        waveNum: 2
+        waveHeight: 30,
+        waveNum: 2,
+        formatter: '{value} \n 人'
       }
+    }
+  },
+  mounted () {
+    this._getPeopleData()
+    setInterval(() => {
+      this._getPeopleData()
+    }, 1000 * 60 * 5)
+  },
+  methods: {
+    _getPeopleData () {
+      let data = Number((Math.random() * 10 + 230).toFixed(0))
+      this.config.data = [data]
+      this.config = { ...this.config }
+      // getPeopleData().then(res => {
+      //   this.config.data = [res.data]
+      //   this.config = { ...this.config }
+      // })
     }
   }
 }
@@ -30,11 +49,12 @@ export default {
 
 <style lang="less">
 #water-level-chart {
-  width: 20%;
+  width: 100%;
+  height: 33%;
   box-sizing: border-box;
-  margin-left: 20px;
+  // margin-left: 20px;
   background-color: rgba(6, 30, 93, 0.5);
-  border-top: 2px solid rgba(1, 153, 209, .5);
+  // border-top: 2px solid rgba(1, 153, 209, .5);
   display: flex;
   flex-direction: column;
 
@@ -43,7 +63,7 @@ export default {
     height: 50px;
     display: flex;
     align-items: center;
-    font-size: 20px;
+    font-size: 22px;
     justify-content: center;
   }
 

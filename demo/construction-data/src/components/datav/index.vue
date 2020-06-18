@@ -5,7 +5,21 @@
       <top-header />
 
       <div class="main-content">
-        <digital-flop />
+        <dv-border-box-8 class="left-content">
+          <cards />
+          <waterLevelChart />
+          <carBar />
+        </dv-border-box-8>
+        <div class="middle-content">
+          <iframe class="mainFrame" src="http://www.thingjs.com/pp/c827821de82369bfc334b183" frameborder="0" allowtransparency="true" />
+          </div>
+        <dv-border-box-1 class="right-content">
+          <energyLine />
+          <xungen />
+          <!-- <roseChart /> -->
+          <scrollBoard />
+        </dv-border-box-1>
+        <!-- <digital-flop />
 
         <div class="block-left-right-content">
           <ranking-board />
@@ -21,7 +35,7 @@
 
             <cards />
           </div>
-        </div>
+        </div> -->
       </div>
     </dv-full-screen-container>
   </div>
@@ -29,23 +43,34 @@
 
 <script>
 import topHeader from './topHeader'
-import digitalFlop from './digitalFlop'
-import rankingBoard from './rankingBoard'
-import roseChart from './roseChart'
+// import digitalFlop from './digitalFlop'
+// import rankingBoard from './rankingBoard'
+// import roseChart from './roseChart'
 import waterLevelChart from './waterLevelChart'
 import scrollBoard from './scrollBoard'
 import cards from './cards'
+// import circlePie from './circlePie'
+import carBar from './carBar'
+// import energy from './energy'
+import energyLine from './energyLine'
+import xungen from './xungen'
 
 export default {
   name: 'DataView',
   components: {
     topHeader,
-    digitalFlop,
-    rankingBoard,
-    roseChart,
+    // digitalFlop,
+    // rankingBoard,
+    // roseChart,
     waterLevelChart,
     scrollBoard,
-    cards
+    cards,
+    // circlePie,
+    carBar,
+    // energy,
+    energyLine,
+    xungen
+
   },
   data () {
     return {}
@@ -72,9 +97,42 @@ export default {
   .main-content {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
+    .left-content {
+      width: 22%;
+      padding: 10px;
+      box-sizing: border-box;
+      background-color: rgba(6, 30, 93, 0.5);
+      .border-box-content {
+      flex-direction: column;
+    }
   }
-
+  .middle-content {
+      flex: 1;
+      display: flex;
+      flex-basis: 40%;
+      // margin-top: 20px;
+      background-color: rgba(6, 30, 93, 0.5);
+      .mainFrame{
+        width: 100%;
+        height: 100%;
+  }
+  }
+  .right-content {
+      width: 22%;
+      padding: 10px;
+      box-sizing: border-box;
+      background-color: rgba(6, 30, 93, 0.5);
+      .border-box-content {
+      flex-direction: column;
+    }
+      // flex: 1;
+      // display: flex;
+      // flex-basis: 10%;
+      // // margin-top: 20px;
+      // background-color: rgba(6, 30, 93, 0.5);
+  }
+  }
   .block-left-right-content {
     flex: 1;
     display: flex;

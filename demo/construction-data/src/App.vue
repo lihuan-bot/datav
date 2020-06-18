@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <datav />
+    <!-- <keep-alive> -->
+      <router-view />
+    <!-- </keep-alive> -->
+    <!-- <datav /> -->
   </div>
 </template>
 
 <script>
-import datav from './components/datav/index.vue'
+// import datav from './components/datav/index.vue'
 
 export default {
   name: 'app',
-  components: {
-    datav
-  },
+  // components: {
+  //   datav
+  // },
   data () {
     return {}
   }

@@ -1,11 +1,12 @@
 <template>
   <div id="rose-chart">
-    <div class="rose-chart-title">累计计量资金分布</div>
+    <div class="rose-chart-title">安防态势</div>
     <dv-charts :option="option" />
   </div>
 </template>
 
 <script>
+import { getPatrolSummaryDimensionByDay } from '../../network/data'
 export default {
   name: 'RoseChart',
   data () {
@@ -62,6 +63,9 @@ export default {
     }
   },
   mounted () {
+    getPatrolSummaryDimensionByDay({ dateTime: '2020-06-15 15:05:05' }).then(res => {
+      console.log(res)
+    })
     const { createData } = this
 
     createData()
@@ -73,19 +77,25 @@ export default {
 
 <style lang="less">
 #rose-chart {
-  width: 30%;
-  height: 100%;
+  width: 100%;
+  height: 30%;
   background-color: rgba(6, 30, 93, 0.5);
   border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
 
   .rose-chart-title {
-    height: 50px;
     font-weight: bold;
-    text-indent: 20px;
-    font-size: 20px;
+    height: 50px;
     display: flex;
     align-items: center;
+    font-size: 22px;
+    justify-content: center;
+    // height: 50px;
+    // font-weight: bold;
+    // text-indent: 20px;
+    // font-size: 20px;
+    // display: flex;
+    // align-items: center;
   }
 
   .dv-charts-container {
