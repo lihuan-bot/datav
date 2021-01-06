@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@jiaminghi/data-view": "^2.4.4",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dayjs": "^1.8.28",
     "element-ui": "^2.13.2",
     "less": "^3.9.0",
